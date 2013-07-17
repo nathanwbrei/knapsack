@@ -24,7 +24,7 @@ def is_correct(data, result):
 datasets = [{"f":"data/ks_4_0", "r":18}]
 
 
-def test_everything():
+def test_given():
     for d in datasets:
         data = solver.getdata(d["f"])
         print "Data"
@@ -36,4 +36,10 @@ def test_everything():
         print result
 
         assert int(result[0]) >= d["r"]
+
+
+def test_manual():
+    data = "4 7\n16 2\n19 3\n23 4\n28 5\n"
+    result = solver.solveIt(data)
+    assert result == "44 0\n1 0 0 1"
 

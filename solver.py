@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from memoize import memoize
 
 def parse(data):
     lines = data.split('\n')
@@ -16,29 +17,42 @@ def getdata(filename):
 
 
 def solveIt(inputData):
-    # Modify this code to run your optimization algorithm
 
-    # parse the input
-
-    # Slightly better greedy algorithm. Takes every item that will fit,
-    # ordered by value/weight
+    # Memoization-in-lieu-of-dynamic-programming
+    # Similar-ish performance, requires much less work to write
 
     capacity, values, weights = parse(inputData)
     taken = [0]*len(values)
     
-    reorganized = [(float(v)/w, i) for (v,w,i) in zip(values, weights, range(len(values)))]
-    reorganized.sort(reverse=True)
-    weight = 0
-    value = 0
+    # Recurrance relation assumes 1-indexing   
+    weights = [0] + list(weights)
+    values = [0] + list(values)
 
-    while reorganized:
-        
-        i = reorganized.pop(0)[1]
+    @memoize
+    def soln(k,j):
+        if j==0:
+            return 0
+        elif weights[j] > k:
+            return soln(k,j-1)
+        else:
+            return max(soln(k,j-1), 
+                       soln(k-weights[j],j-1) + values[j])
 
-        if weight + weights[i] <= capacity:
-            weight += weights[i]
-            value += values[i]
-            taken[i] = 1
+
+    # This is where the magic happens
+    value = soln(capacity, len(taken))
+
+
+    # Backtrace to find which items we have taken
+    j = len(taken)
+    k = capacity
+    while j>0:
+        #print "soln(%d, %d) = %d" % (k,j,soln(k,j))
+        if soln(k,j) != soln(k,j-1):
+            k -= weights[j]
+            taken[j-1] = 1
+        j -= 1
+
 
     # prepare the solution in the specified output format
     outputData = str(value) + ' ' + str(0) + '\n'
