@@ -24,19 +24,25 @@ def solveIt(inputData):
 
     items = len(values)
 
-    # a trivial greedy algorithm for filling the knapsack
-    # it takes items in-order until the knapsack is full
-    value = 0
-    weight = 0
-    taken = []
 
-    for i in range(0, items):
+    # Slightly better greedy algorithm. Takes every item that will fit,
+    # ordered by value/weight
+
+    taken = [0]*items
+    
+    reorganized = [(float(v)/w, i) for (v,w,i) in zip(values, weights, range(items))]
+    reorganized.sort(reverse=True)
+    weight = 0
+    value = 0
+
+    while reorganized:
+        
+        i = reorganized.pop(0)[1]
+
         if weight + weights[i] <= capacity:
-            taken.append(1)
-            value += values[i]
             weight += weights[i]
-        else:
-            taken.append(0)
+            value += values[i]
+            taken[i] = 1
 
     # prepare the solution in the specified output format
     outputData = str(value) + ' ' + str(0) + '\n'
