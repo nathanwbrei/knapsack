@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from memoize import memoize
+import numpy as np
 
 def parse(data):
     lines = data.split('\n')
@@ -23,32 +23,24 @@ def solveIt(inputData):
 
     capacity, values, weights = parse(inputData)
     taken = [0]*len(values)
+    items = len(values)
     
     # Recurrance relation assumes 1-indexing   
     weights = [0] + list(weights)
     values = [0] + list(values)
 
-    @memoize
-    def soln(k,j):
-        if j==0:
-            return 0
-        elif weights[j] > k:
-            return soln(k,j-1)
-        else:
-            return max(soln(k,j-1), 
-                       soln(k-weights[j],j-1) + values[j])
-
-
-    items = len(taken)
-    print "%d items, %d capacity" % (items, capacity)
-    # Build bottom-up. Otherwise we hit recursion depth limits
-    for j in range(items):
+    soln = np.zeros((capacity+1, len(weights)), dtype=np.uint32)
+    for j in range(1,len(taken)+1):
         print "%d/%d: %d%% finished..." % (j, items, j*100./items)
-        for k in range(capacity):
-            soln(k,j)
+        for k in range(capacity+1):
+            if weights[j] > k:
+                soln[k,j] = soln[k,j-1]
+            else:
+                soln[k,j] = max(soln[k,j-1],
+                                soln[k-weights[j],j-1]+values[j])
 
     # This is where the magic happens
-    value = soln(capacity, len(taken))
+    value = soln[capacity, len(taken)]
 
 
     # Backtrace to find which items we have taken
@@ -56,7 +48,7 @@ def solveIt(inputData):
     k = capacity
     while j>0:
         #print "soln(%d, %d) = %d" % (k,j,soln(k,j))
-        if soln(k,j) != soln(k,j-1):
+        if soln[k,j] != soln[k,j-1]:
             k -= weights[j]
             taken[j-1] = 1
         j -= 1
