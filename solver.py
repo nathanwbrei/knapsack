@@ -2,35 +2,25 @@
 # -*- coding: utf-8 -*-
 
 
+def parse(data):
+    lines = data.split('\n')
+    capacity = int(lines[0].split()[1])
+    values, weights = zip(*[map(int,l.split()) for l in lines[1:-1]])
+    return capacity, values, weights
+
+
 def solveIt(inputData):
     # Modify this code to run your optimization algorithm
 
     # parse the input
-    lines = inputData.split('\n')
-
-    firstLine = lines[0].split()
-    items = int(firstLine[0])
-    capacity = int(firstLine[1])
-
-    values = []
-    weights = []
-
-    for i in range(1, items+1):
-        line = lines[i]
-        parts = line.split()
-
-        values.append(int(parts[0]))
-        weights.append(int(parts[1]))
-
-    items = len(values)
-
 
     # Slightly better greedy algorithm. Takes every item that will fit,
     # ordered by value/weight
 
-    taken = [0]*items
+    capacity, values, weights = parse(inputData)
+    taken = [0]*len(values)
     
-    reorganized = [(float(v)/w, i) for (v,w,i) in zip(values, weights, range(items))]
+    reorganized = [(float(v)/w, i) for (v,w,i) in zip(values, weights, range(len(values)))]
     reorganized.sort(reverse=True)
     weight = 0
     value = 0
