@@ -26,15 +26,14 @@ datasets = [{"f":"data/ks_4_0", "r":18}]
 
 def test_everything():
     for d in datasets:
-        with open(d["f"], 'r') as f:
-            data = ''.join(f.readlines())
-            print "Data"
-            print "-"*25
-            print data
-            result = solver.solveIt(data).split()
-            print "Result"
-            print "-"*25
-            print result
+        data = solver.getdata(d["f"])
+        print "Data"
+        print "-"*25
+        print data
+        result = solver.solveIt(data).split()
+        print "Result"
+        print "-"*25
+        print result
 
-            assert int(result[0]) >= d["r"]
+        assert int(result[0]) >= d["r"]
 

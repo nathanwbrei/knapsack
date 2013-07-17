@@ -9,6 +9,12 @@ def parse(data):
     return capacity, values, weights
 
 
+def getdata(filename):
+    with open(filename, 'r') as f:
+        return ''.join(f.readlines())
+
+
+
 def solveIt(inputData):
     # Modify this code to run your optimization algorithm
 
@@ -45,10 +51,7 @@ import sys
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         fileLocation = sys.argv[1].strip()
-        inputDataFile = open(fileLocation, 'r')
-        inputData = ''.join(inputDataFile.readlines())
-        inputDataFile.close()
-        print solveIt(inputData)
+        print solveIt(getdata(fileLocation))
     else:
         print 'This test requires an input file.  Please select one from the data directory. (i.e. python solver.py ./data/ks_4_0)'
 
