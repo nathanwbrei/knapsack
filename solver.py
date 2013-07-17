@@ -39,6 +39,14 @@ def solveIt(inputData):
                        soln(k-weights[j],j-1) + values[j])
 
 
+    items = len(taken)
+    print "%d items, %d capacity" % (items, capacity)
+    # Build bottom-up. Otherwise we hit recursion depth limits
+    for j in range(items):
+        print "%d/%d: %d%% finished..." % (j, items, j*100./items)
+        for k in range(capacity):
+            soln(k,j)
+
     # This is where the magic happens
     value = soln(capacity, len(taken))
 
