@@ -30,9 +30,9 @@ def solveIt(inputData):
     values = [0] + list(values)
 
     soln = np.zeros((capacity+1, len(weights)), dtype=np.uint32)
-    for j in range(1,len(taken)+1):
+    for j in xrange(1,len(taken)+1):
         print "%d/%d: %d%% finished..." % (j, items, j*100./items)
-        for k in range(capacity+1):
+        for k in xrange(capacity+1):
             if weights[j] > k:
                 soln[k,j] = soln[k,j-1]
             else:
