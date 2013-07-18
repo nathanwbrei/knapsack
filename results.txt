@@ -1,0 +1,104 @@
+running build_ext
+running build_src
+build_src
+building extension "sc_e119175737f5725ea77affc34fb285c50" sources
+build_src: building npy-pkg config files
+customize UnixCCompiler
+customize UnixCCompiler using build_ext
+customize UnixCCompiler
+customize UnixCCompiler using build_ext
+building 'sc_e119175737f5725ea77affc34fb285c50' extension
+compiling C++ sources
+C compiler: c++ -fno-strict-aliasing -fno-common -dynamic -I/usr/local/include -I/usr/local/opt/sqlite/include -DNDEBUG -g -fwrapv -O3 -Wall
+
+compile options: '-I/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave -I/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/scxx -I/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz -I/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/include/python2.7 -c'
+c++: /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/scxx/weave_imp.cpp
+c++: /Users/nathanwbrei/.python27_compiled/sc_e119175737f5725ea77affc34fb285c50.cpp
+In file included from /Users/nathanwbrei/.python27_compiled/sc_e119175737f5725ea77affc34fb285c50.cpp:11:
+In file included from /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array.h:26:
+In file included from /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array-impl.h:37:
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/range.h:120:34: warning: '&&' within '||' [-Wlogical-op-parentheses]
+        return ((first_ < last_) && (stride_ == 1) || (first_ == last_));
+                ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~ ~~
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/range.h:120:34: note: place parentheses around the '&&' expression to silence this warning
+        return ((first_ < last_) && (stride_ == 1) || (first_ == last_));
+                                 ^
+                (                                 )
+In file included from /Users/nathanwbrei/.python27_compiled/sc_e119175737f5725ea77affc34fb285c50.cpp:11:
+In file included from /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array.h:26:
+In file included from /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array-impl.h:2512:
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array/resize.cc:942:19: warning: unused variable 'overlap0' [-Wunused-variable]
+            Range overlap0 = Range(fromStart, minmax::min(B.ubound(0), 
+                  ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array/resize.cc:944:19: warning: unused variable 'overlap1' [-Wunused-variable]
+            Range overlap1 = Range(fromStart, minmax::min(B.ubound(1), 
+                  ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array/resize.cc:946:19: warning: unused variable 'overlap2' [-Wunused-variable]
+            Range overlap2 = Range(fromStart, minmax::min(B.ubound(2), 
+                  ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array/resize.cc:948:19: warning: unused variable 'overlap3' [-Wunused-variable]
+            Range overlap3 = Range(fromStart, minmax::min(B.ubound(3), 
+                  ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array/resize.cc:950:19: warning: unused variable 'overlap4' [-Wunused-variable]
+            Range overlap4 = Range(fromStart, minmax::min(B.ubound(4), 
+                  ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array/resize.cc:952:19: warning: unused variable 'overlap5' [-Wunused-variable]
+            Range overlap5 = Range(fromStart, minmax::min(B.ubound(5), 
+                  ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array/resize.cc:954:19: warning: unused variable 'overlap6' [-Wunused-variable]
+            Range overlap6 = Range(fromStart, minmax::min(B.ubound(6), 
+                  ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array/resize.cc:956:19: warning: unused variable 'overlap7' [-Wunused-variable]
+            Range overlap7 = Range(fromStart, minmax::min(B.ubound(7), 
+                  ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array/resize.cc:958:19: warning: unused variable 'overlap8' [-Wunused-variable]
+            Range overlap8 = Range(fromStart, minmax::min(B.ubound(8), 
+                  ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array/resize.cc:960:19: warning: unused variable 'overlap9' [-Wunused-variable]
+            Range overlap9 = Range(fromStart, minmax::min(B.ubound(9), 
+                  ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/blitz/blitz/array/resize.cc:962:19: warning: unused variable 'overlap10' [-Wunused-variable]
+            Range overlap10 = Range(fromStart, minmax::min(B.ubound(10), 
+                  ^
+In file included from /Users/nathanwbrei/.python27_compiled/sc_e119175737f5725ea77affc34fb285c50.cpp:18:
+In file included from /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/scxx/list.h:16:
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/scxx/sequence.h:106:16: warning: 'py::sequence::set_item' hides overloaded virtual function [-Woverloaded-virtual]
+  virtual void set_item(int ndx, object& val) {
+               ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/scxx/object.h:781:16: note: hidden overloaded virtual function 'py::object::set_item' declared here
+  virtual void set_item(const object& key, const object& val) {
+               ^
+In file included from /Users/nathanwbrei/.python27_compiled/sc_e119175737f5725ea77affc34fb285c50.cpp:20:
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/scxx/dict.h:173:16: warning: 'py::dict::set_item' hides overloaded virtual function [-Woverloaded-virtual]
+  virtual void set_item(const char* key, object& val) {
+               ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/scxx/object.h:781:16: note: hidden overloaded virtual function 'py::object::set_item' declared here
+  virtual void set_item(const object& key, const object& val) {
+               ^
+In file included from /Users/nathanwbrei/.python27_compiled/sc_e119175737f5725ea77affc34fb285c50.cpp:20:
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/scxx/dict.h:179:16: warning: 'py::dict::set_item' hides overloaded virtual function [-Woverloaded-virtual]
+  virtual void set_item(object& key, object& val) const {
+               ^
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/scxx/object.h:781:16: note: hidden overloaded virtual function 'py::object::set_item' declared here
+  virtual void set_item(const object& key, const object& val) {
+               ^
+In file included from /Users/nathanwbrei/.python27_compiled/sc_e119175737f5725ea77affc34fb285c50.cpp:23:
+In file included from /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h:15:
+In file included from /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/ndarrayobject.h:17:
+In file included from /usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/ndarraytypes.h:1728:
+/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/numpy/core/include/numpy/npy_deprecated_api.h:11:2: warning: "Using deprecated NumPy API, disable it by #defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-W#warnings]
+#warning "Using deprecated NumPy API, disable it by #defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION"
+ ^
+16 warnings generated.
+c++ -bundle -undefined dynamic_lookup -L/usr/local/lib -L/usr/local/opt/sqlite/lib /var/folders/1k/q68xhskx4ks0dfs38lkh72y40000gn/T/nathanwbrei/python27_intermediate/compiler_6e676882b2bb03b3006b5ae582f2ea62/Users/nathanwbrei/.python27_compiled/sc_e119175737f5725ea77affc34fb285c50.o /var/folders/1k/q68xhskx4ks0dfs38lkh72y40000gn/T/nathanwbrei/python27_intermediate/compiler_6e676882b2bb03b3006b5ae582f2ea62/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/scipy/weave/scxx/weave_imp.o -o /Users/nathanwbrei/.python27_compiled/sc_e119175737f5725ea77affc34fb285c50.so
+running scons
+12.0397s @ 2013-07-17 20:17:46.200842
+----------------------------------------------
+Pulled recurrance out into a separate function
+13.2070s @ 2013-07-17 20:21:20.007969
+13.2002s @ 2013-07-17 20:21:51.935024
+13.2314s @ 2013-07-17 20:22:08.855175
+-------------------------------------------------------
+Back again - why was the earlier version so much faster
+12.0241s @ 2013-07-17 20:23:40.175504
+1.5569s @ 2013-07-17 21:40:18.266455

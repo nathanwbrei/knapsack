@@ -43,17 +43,27 @@ def solveIt(inputData):
     capacity, values, weights = parse(inputData)
     taken = [0]*len(values)
     items = len(values)
-    #print "Capacity: %d" % capacity
-    #print "Items: %d" % items
-    #print "Est running time: %ds" % (capacity*items/20000000.)
+    print "Capacity: %d" % capacity
+    print "Items: %d" % items
+    print "Est running time: %ds" % (capacity*items/20000000.)
     
     # Recurrance relation assumes 1-indexing   
     weights = [0] + list(weights)
     values = [0] + list(values)
 
-    soln = np.zeros((capacity+1, len(weights)), dtype=np.uint32)
+    print("Allocating soln")
+    #TODO: Allocating takes REALLY LONG--- 
+    # should I move the allocating and the backtracking back into the C
+    # code?
+
+    soln = np.zeros((capacity+1, len(weights)), dtype=np.uint64)
+
+    print("Generating table")
+    #TODO: Segfaults@j=1, k=huge.   
+
     code = """
     for (int j=1;j<=items;j++){
+        printf("%d/%d: %.0f\\n", j, items, 100.0*j/items);
         for (int k=0;k<=capacity;k++){
             if (int(weights[j]) > k){
                 soln(k,j) = soln(k,j-1);
@@ -64,6 +74,8 @@ def solveIt(inputData):
     }
     """
     w.inline(code, ['soln','weights','values','capacity','items'], type_converters=w.converters.blitz)
+
+    print "Backtracing"
 
     # Backtrace to find which items we have taken
     j = len(taken)
