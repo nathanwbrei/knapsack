@@ -2,12 +2,31 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+import scipy.weave as w 
+
 
 def parse(data):
+
+    # parse the input
     lines = data.split('\n')
-    capacity = int(lines[0].split()[1])
-    values, weights = zip(*[map(int,l.split()) for l in lines[1:-1]])
+
+    firstLine = lines[0].split()
+    items = int(firstLine[0])
+    capacity = int(firstLine[1])
+
+    values = []
+    weights = []
+
+    for i in range(1, items+1):
+        line = lines[i]
+        parts = line.split()
+
+        values.append(int(parts[0]))
+        weights.append(int(parts[1]))
+
     return capacity, values, weights
+
+
 
 
 def getdata(filename):
@@ -18,41 +37,45 @@ def getdata(filename):
 
 def solveIt(inputData):
 
-    # Memoization-in-lieu-of-dynamic-programming
-    # Similar-ish performance, requires much less work to write
+    # True dynamic programming
+    # scipy/weave inlined C code makes it faster
 
     capacity, values, weights = parse(inputData)
     taken = [0]*len(values)
     items = len(values)
+    #print "Capacity: %d" % capacity
+    #print "Items: %d" % items
+    #print "Est running time: %ds" % (capacity*items/20000000.)
     
     # Recurrance relation assumes 1-indexing   
     weights = [0] + list(weights)
     values = [0] + list(values)
 
     soln = np.zeros((capacity+1, len(weights)), dtype=np.uint32)
-    for j in xrange(1,len(taken)+1):
-        print "%d/%d: %d%% finished..." % (j, items, j*100./items)
-        for k in xrange(capacity+1):
-            if weights[j] > k:
-                soln[k,j] = soln[k,j-1]
-            else:
-                soln[k,j] = max(soln[k,j-1],
-                                soln[k-weights[j],j-1]+values[j])
-
-    # This is where the magic happens
-    value = soln[capacity, len(taken)]
-
+    code = """
+    for (int j=1;j<=items;j++){
+        for (int k=0;k<=capacity;k++){
+            if (int(weights[j]) > k){
+                soln(k,j) = soln(k,j-1);
+            } else {
+                soln(k,j) = fmax(soln(k,j-1), soln(k-int(weights[j]),j-1) + int(values[j]));
+            }
+        }
+    }
+    """
+    w.inline(code, ['soln','weights','values','capacity','items'], type_converters=w.converters.blitz)
 
     # Backtrace to find which items we have taken
     j = len(taken)
     k = capacity
     while j>0:
-        #print "soln(%d, %d) = %d" % (k,j,soln(k,j))
+        #print "soln(%d, %d) = %d" % (k,j,soln[k,j])
         if soln[k,j] != soln[k,j-1]:
             k -= weights[j]
             taken[j-1] = 1
         j -= 1
 
+    value = soln[capacity, len(taken)]
 
     # prepare the solution in the specified output format
     outputData = str(value) + ' ' + str(0) + '\n'
