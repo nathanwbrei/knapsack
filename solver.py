@@ -37,29 +37,32 @@ def solveIt(inputData):
     def fitness(indiv, values, weights, capacity):
         value =  sum(v*t for (v,t) in zip(values, indiv)) 
         weight = sum(w*t for (w,t) in zip(weights, indiv))
-        print "value="+str(value)
         return value*(weight<=capacity)
     
-    def random_individual(items, rate=.05):
-        gene = [0]*items
-        for i in range(int(rate*items)):
+    def random_cohort(population, items):
+        cohort = []
+        while len(cohort)<population: 
+            gene = [0]*items
             gene[randint(0,len(gene)-1)] = 1
-        return (fitness(gene, values, weights, capacity), gene)
+            fit = fitness(gene, values, weights, capacity)
+            if fit>0:
+                cohort.append((fit, gene))
+        return cohort 
 
-    def crossover(indiv1, indiv2):
-        items = len(indiv1[1])
+    def crossover(parent1, parent2):
+        items = len(parent1)
         start = randint(0, items-1)
         end = randint(start+1, items)
-        indiv = list(indiv1)
-        indiv[start:end] = indiv2[start:end]
-        return (fitness(indiv, values, weights, capacity), indiv)
+        gene = list(parent1)
+        gene[start:end] = parent2[start:end]
+        return gene 
 
-    def mutation(indiv, rate):
+    def mutation(indiv, rate=0.02):
         for i in range(int(len(indiv)*rate)):
-            pos = randint(0, len(indiv))
-            indiv[pos] = int(not(indiv[pos]))
+            pos = randint(0, len(indiv)-1)
+            indiv[pos] = randint(0,1) 
         return indiv
-    
+
 
     def draw(cohort, total):
         have = 0
@@ -75,10 +78,30 @@ def solveIt(inputData):
         # Sample proportional to fitness
         cohort.sort(reverse=True)
         total = sum(zip(*cohort)[0])
-        newcohort = []
-        for i in range(len(cohort)):
-            newindiv = cohort[draw(cohort, total)][1]
-            newcohort.append((fitness(newindiv, values, weights, capacity), newindiv))
+
+        addedrandomness = [0]*items
+        addedrandomness[randint(0,items-1)]=1
+
+        newcohort = [cohort[0], addedrandomness]
+        while len(newcohort) < len(cohort):
+
+            parent1 = cohort[draw(cohort, total)][1]
+            parent2 = cohort[draw(cohort, total)][1]
+            
+            newindiv = crossover(parent1, parent2)
+            newindiv = mutation(newindiv)
+           
+            while True:
+                fit = fitness(newindiv, values, weights, capacity)
+                if fit>0:
+                    break
+                if 1 not in newindiv:
+                    newindiv[randint(0,items-1)]=1
+                else:
+                    newindiv[newindiv.index(1)] = 0
+            newcohort.append((fit, newindiv))
+
+        newcohort.sort(reverse=True)
         return newcohort
 
 
@@ -91,19 +114,18 @@ def solveIt(inputData):
     print "Items: %d" % items
     
     population = 100
-    mutation_rate = .05
-    iterations = 50
+    iterations = 5000
 
-    cohort = [random_individual(items) for i in range(population)]
+
+    cohort = random_cohort(population, items) 
     for i in range(iterations):
 
+        print "Iteration %d: %d" % (i, cohort[0][0])
         cohort = selection(cohort)
+        print zip(*cohort)[0] 
         print "-"*80
-        for j in range(items):
-            print cohort[j]
-            print "-"*80
-        raw_input("Done with iteration" + str(i))
 
+    
     value,taken = cohort[0]
 
 
