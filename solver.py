@@ -57,8 +57,8 @@ def solveIt(inputData):
         gene[start:end] = parent2[start:end]
         return gene 
 
-    def mutation(indiv, rate=0.02):
-        for i in range(int(len(indiv)*rate)):
+    def mutation(indiv, n=2):
+        for i in range(n):
             pos = randint(0, len(indiv)-1)
             indiv[pos] = randint(0,1) 
         return indiv
@@ -79,10 +79,11 @@ def solveIt(inputData):
         cohort.sort(reverse=True)
         total = sum(zip(*cohort)[0])
 
-        addedrandomness = [0]*items
-        addedrandomness[randint(0,items-1)]=1
+        randomgene = [0]*items
+        randomgene[randint(0,items-1)]=1
+        randomfit = fitness(randomgene, values, weights, capacity)
 
-        newcohort = [cohort[0], addedrandomness]
+        newcohort = [cohort[0], (randomfit, randomgene)]
         while len(newcohort) < len(cohort):
 
             parent1 = cohort[draw(cohort, total)][1]
