@@ -3,7 +3,7 @@
 
 import numpy as np
 import scipy.weave as w 
-
+from random import randint
 
 def parse(data):
 
@@ -26,9 +26,6 @@ def parse(data):
 
     return capacity, values, weights
 
-
-
-
 def getdata(filename):
     with open(filename, 'r') as f:
         return ''.join(f.readlines())
@@ -37,57 +34,78 @@ def getdata(filename):
 
 def solveIt(inputData):
 
-    # True dynamic programming
-    # scipy/weave inlined C code makes it faster
+    def fitness(indiv, values, weights, capacity):
+        value =  sum(v*t for (v,t) in zip(values, indiv)) 
+        weight = sum(w*t for (w,t) in zip(weights, indiv))
+        print "value="+str(value)
+        return value*(weight<=capacity)
+    
+    def random_individual(items, rate=.05):
+        gene = [0]*items
+        for i in range(int(rate*items)):
+            gene[randint(0,len(gene)-1)] = 1
+        return (fitness(gene, values, weights, capacity), gene)
+
+    def crossover(indiv1, indiv2):
+        items = len(indiv1[1])
+        start = randint(0, items-1)
+        end = randint(start+1, items)
+        indiv = list(indiv1)
+        indiv[start:end] = indiv2[start:end]
+        return (fitness(indiv, values, weights, capacity), indiv)
+
+    def mutation(indiv, rate):
+        for i in range(int(len(indiv)*rate)):
+            pos = randint(0, len(indiv))
+            indiv[pos] = int(not(indiv[pos]))
+        return indiv
+    
+
+    def draw(cohort, total):
+        have = 0
+        want = randint(0, total)
+        index = -1
+        while have<want:
+            index += 1
+            have += cohort[index][0]
+        return index
+
+
+    def selection(cohort):
+        # Sample proportional to fitness
+        cohort.sort(reverse=True)
+        total = sum(zip(*cohort)[0])
+        newcohort = []
+        for i in range(len(cohort)):
+            newindiv = cohort[draw(cohort, total)][1]
+            newcohort.append((fitness(newindiv, values, weights, capacity), newindiv))
+        return newcohort
+
+
+    # Genetic algorithm approach
+    # Knapsack seems ideal for this
 
     capacity, values, weights = parse(inputData)
-    taken = [0]*len(values)
     items = len(values)
     print "Capacity: %d" % capacity
     print "Items: %d" % items
-    print "Est running time: %ds" % (capacity*items/20000000.)
     
-    # Recurrance relation assumes 1-indexing   
-    weights = [0] + list(weights)
-    values = [0] + list(values)
+    population = 100
+    mutation_rate = .05
+    iterations = 50
 
-    print("Allocating soln")
-    #TODO: Allocating takes REALLY LONG--- 
-    # should I move the allocating and the backtracking back into the C
-    # code?
+    cohort = [random_individual(items) for i in range(population)]
+    for i in range(iterations):
 
-    soln = np.zeros((capacity+1, len(weights)), dtype=np.uint64)
+        cohort = selection(cohort)
+        print "-"*80
+        for j in range(items):
+            print cohort[j]
+            print "-"*80
+        raw_input("Done with iteration" + str(i))
 
-    print("Generating table")
-    #TODO: Segfaults@j=1, k=huge.   
+    value,taken = cohort[0]
 
-    code = """
-    for (int j=1;j<=items;j++){
-        printf("%d/%d: %.0f\\n", j, items, 100.0*j/items);
-        for (int k=0;k<=capacity;k++){
-            if (int(weights[j]) > k){
-                soln(k,j) = soln(k,j-1);
-            } else {
-                soln(k,j) = fmax(soln(k,j-1), soln(k-int(weights[j]),j-1) + int(values[j]));
-            }
-        }
-    }
-    """
-    w.inline(code, ['soln','weights','values','capacity','items'], type_converters=w.converters.blitz)
-
-    print "Backtracing"
-
-    # Backtrace to find which items we have taken
-    j = len(taken)
-    k = capacity
-    while j>0:
-        #print "soln(%d, %d) = %d" % (k,j,soln[k,j])
-        if soln[k,j] != soln[k,j-1]:
-            k -= weights[j]
-            taken[j-1] = 1
-        j -= 1
-
-    value = soln[capacity, len(taken)]
 
     # prepare the solution in the specified output format
     outputData = str(value) + ' ' + str(0) + '\n'
