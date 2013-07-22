@@ -34,104 +34,36 @@ def getdata(filename):
 
 def solveIt(inputData):
 
-    def fitness(indiv, values, weights, capacity):
+    def fitness(indiv):
         value =  sum(v*t for (v,t) in zip(values, indiv)) 
         weight = sum(w*t for (w,t) in zip(weights, indiv))
         return value*(weight<=capacity)
     
-    def random_cohort(population, items):
-        cohort = []
-        while len(cohort)<population: 
-            gene = [0]*items
-            gene[randint(0,len(gene)-1)] = 1
-            fit = fitness(gene, values, weights, capacity)
-            if fit>0:
-                cohort.append((fit, gene))
-        return cohort 
-
-    def crossover(parent1, parent2):
-        items = len(parent1)
-        start = randint(0, items-1)
-        end = randint(start+1, items)
-        gene = list(parent1)
-        gene[start:end] = parent2[start:end]
-        return gene 
-
-    def mutation(indiv, rate=0.02):
-        for i in range(int(len(indiv)*rate)):
-            pos = randint(0, len(indiv)-1)
-            indiv[pos] = randint(0,1) 
-        return indiv
-
-
-    def draw(cohort, total):
-        have = 0
-        want = randint(0, total)
-        index = -1
-        while have<want:
-            index += 1
-            have += cohort[index][0]
-        return index
-
-
-    def selection(cohort):
-        # Sample proportional to fitness
-        cohort.sort(reverse=True)
-        total = sum(zip(*cohort)[0])
-
-        addedrandomness = [0]*items
-        addedrandomness[randint(0,items-1)]=1
-
-        newcohort = [cohort[0], addedrandomness]
-        while len(newcohort) < len(cohort):
-
-            parent1 = cohort[draw(cohort, total)][1]
-            parent2 = cohort[draw(cohort, total)][1]
-            
-            newindiv = crossover(parent1, parent2)
-            newindiv = mutation(newindiv)
-           
-            while True:
-                fit = fitness(newindiv, values, weights, capacity)
-                if fit>0:
-                    break
-                if 1 not in newindiv:
-                    newindiv[randint(0,items-1)]=1
-                else:
-                    newindiv[newindiv.index(1)] = 0
-            newcohort.append((fit, newindiv))
-
-        newcohort.sort(reverse=True)
-        return newcohort
-
-
-    # Genetic algorithm approach
-    # Knapsack seems ideal for this
-
+    def modify(soln):
+        newsoln = soln[:]
+        for i in range(randint(1,20)):
+            newsoln[randint(0,items-1)] = randint(0,1)
+        return newsoln
+    
     capacity, values, weights = parse(inputData)
     items = len(values)
     print "Capacity: %d" % capacity
     print "Items: %d" % items
     
-    population = 100
-    iterations = 5000
+    soln = [0]*items
+    fit = fitness(soln)
+    for i in range(1000000):
+        soln2 = modify(soln)
+        fit2 = fitness(soln2)
+        if fit2>fit:
+            soln = soln2
+            fit = fit2
 
-
-    cohort = random_cohort(population, items) 
-    for i in range(iterations):
-
-        print "Iteration %d: %d" % (i, cohort[0][0])
-        cohort = selection(cohort)
-        print zip(*cohort)[0] 
-        print "-"*80
-
+            print "Iteration %d: %d | %d" % (i, fit2, fit)
     
-    value,taken = cohort[0]
-
-
     # prepare the solution in the specified output format
-    outputData = str(value) + ' ' + str(0) + '\n'
-    outputData += ' '.join(map(str, taken))
+    outputData = str(fit) + ' ' + str(0) + '\n'
+    outputData += ' '.join(map(str, soln))
     return outputData
 
 
